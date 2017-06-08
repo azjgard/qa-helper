@@ -1,0 +1,9 @@
+javascript:(mainApp = function() { 
+  var JSFILE_LOCATION = 'https://localhost:8080/add-bug.js';
+
+  var h  = document.createElement('script');
+  h.src  = JSFILE_LOCATION;
+  h.type = 'text/javascript';
+  
+  document.body.appendChild(h);
+}();
