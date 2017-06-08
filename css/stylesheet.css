@@ -1,0 +1,8 @@
+/* this is a body rule */
+body {
+  background-color : gold;
+  color            : maroon;
+  width            : 50%;
+  margin           : auto;
+  display          : block;
+}

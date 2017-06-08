@@ -1,0 +1,1 @@
+(function() { var css = 'body{background-color:gold;color:maroon;width:50%;margin:auto;display:block}';var style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})();
