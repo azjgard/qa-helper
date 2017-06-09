@@ -7,7 +7,7 @@
 // @return - a function signature that,
 // when executed, will grab the current slide ID from the page
 qa_helper.getCurrentSlide = new function() {
-
+  
   var getID = function() {
     var $btn_support = $("#btn-support");
 

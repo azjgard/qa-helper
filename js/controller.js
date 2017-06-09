@@ -37,12 +37,13 @@ if(!qa_helper){
   
   var qa_helper = {};
   
+
   //
-  //Create templates for different websites
+  //Create templates for different web pages
   //
   var template;
   if(typeof loadNextSlide !== 'undefined') {
-    //blackboard courseware
+    //Blackboard courseware
     template = '<div class="footer-bar-box" id="draggable">'                                                          +
                       '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'   +
                       '<div id="footer-bar">'                                                                         +
@@ -105,20 +106,20 @@ if(!qa_helper){
     $(window).keyup(handleKeyUp);
 
     function handleKeydown(ev) {
-      if      (ev.keyCode === 17) { ctrlPressed  = true; }
-      else if (ev.keyCode === 16) { shiftPressed = true; }
+      if      (ev.which === 17) { ctrlPressed  = true; }
+      else if (ev.which === 16) { shiftPressed = true; }
 
       if (ctrlPressed && shiftPressed) {
-        if      (ev.keyCode === hotkey_addBug)          { qa_helper.addBug();              }
-        else if (ev.keyCode === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
-        else if (ev.keyCode === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
-        else if (ev.keyCode === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
+        if      (ev.which === hotkey_addBug)          { qa_helper.addBug();              }
+        else if (ev.which === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
+        else if (ev.which === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
+        else if (ev.which === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
       }
     }
 
     function handleKeyUp(ev) {
-      if      (ev.keyCode === 17) { ctrlPressed  = false; }
-      else if (ev.keyCode === 16) { shiftPressed = false; }
+      if      (ev.which === 17) { ctrlPressed  = false; }
+      else if (ev.which === 16) { shiftPressed = false; }
     }
 
   }, 500);

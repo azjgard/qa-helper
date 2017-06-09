@@ -13,7 +13,6 @@ qa_helper.navigate = new function() {
   this.select_slide = function(){
     // lets you choose the slide to go to
     var slide_reference = prompt("Please enter the 3 number sequence of the slide you want to go to (last three numbers)", "1-01-1"); 
-
     if (slide_reference) {
       loadSlideByReferenceId(slide_reference); 
     }
