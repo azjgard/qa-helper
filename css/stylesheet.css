@@ -7,13 +7,18 @@
 }
 #grabbable {
   border     : solid black 1px;
+  height: 32px;
   text-align : center;
   cursor     : move;
-  padding    : 10px;
+  padding    : 0;
   background-color: #ccc;
 }
 #draggable {
   z-index: 9999;
+}
+#hide-qa-helper{
+  position: absolute;
+  right: 0;
 }
 
 
@@ -30,6 +35,4 @@
   text-align: center;
   cursor: pointer;
 }
-.float-right {
-    float: right;
-}
+

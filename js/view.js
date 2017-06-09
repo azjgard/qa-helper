@@ -33,7 +33,7 @@ qa_helper.view = new function() {
 
   // template for the elements to load to the page
   this.element = '<div class="footer-bar-box" id="draggable">'                   +
-                      '<div id="grabbable"><span>Drag Icon</span><button class="float-right" id="hide-qa-helper">X</button></div>'                      +
+                      '<div id="grabbable" class="group"><span>Drag Icon</span><button id="hide-qa-helper">X</button></div>'                      +
                       '<div id="footer-bar">'                                    +
                           '<div id="btn-get-course-info" class="footer-button">' +
                               '<p>Course Info.</p>'                              +
