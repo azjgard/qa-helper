@@ -1,1 +1,0 @@
-body{background-color:gold;color:maroon;width:50%;margin:auto;display:block}html{font-size:30px;font-weight:bold}
