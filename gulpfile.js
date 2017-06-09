@@ -1,14 +1,34 @@
-var gulp        = require('gulp');
-var concat      = require('gulp-concat');
-var uglify      = require('gulp-uglify');
-var watch       = require('gulp-watch');
-var runSequence = require('run-sequence');
-var plumber     = require('gulp-plumber'); // prevents stoppage on err
+var gulp = require('gulp');
 
-// css to js
-var wrapper     = require('gulp-wrapper');
+//
+// Gulp Modules
+//
+
+// combine files together
+var concat = require('gulp-concat');
+
+// listen for file changes to run tasks
+var watch = require('gulp-watch');
+
+// run gulp tasks synchronously
+var runSequence = require('run-sequence');
+
+// pipe here first to prevent stoppage on err
+var plumber = require('gulp-plumber');
+
+// prepend and append text to files
+var wrapper = require('gulp-wrapper');
+
+// change file extensions
 var ext_replace = require('gulp-ext-replace');
+
+// make code ugly
+var uglify      = require('gulp-uglify');
 var uglifycss   = require('gulp-uglifycss');
+
+//
+// Variables
+//
 
 var cssHeader = '(function() { var css = \'';
 var cssFooter = '\';'                                         +
@@ -17,16 +37,33 @@ var cssFooter = '\';'                                         +
              'document.head.appendChild(style);'              +
              '})();'
 
-// convert the css file to js
-gulp.task('css-to-js', function() {
-  gulp.src('./css/stylesheet.css')
+//
+// Tasks
+//
+
+//
+// styles
+//
+// descr - Grabs css files, combines them together,
+// uglifies the resulting file, changes the file extension to .js,
+// wraps the file with some code to make it valid JavaScript, and
+// outputs it into the js folder
+gulp.task('styles', function() {
+  // grab the css files
+  gulp.src('./css/**/*.css')
+
+    // prevent errors from breaking workflow 
+    .pipe(plumber())
+
+    // combine them
+    .pipe(concat('styles.css'))
 
     // uglify
     .pipe(uglifycss({
       uglyComments: true
     }))
 
-    // convert to js file
+    // convert to js
     .pipe(ext_replace('.js'))
 
     // wrap in js code
@@ -38,30 +75,53 @@ gulp.task('css-to-js', function() {
     // spit into js directory
     .pipe(gulp.dest('./js/'));
 });
- 
-gulp.task('concat-scripts', function() {
-    return gulp.src('./js/*.js')
-      .pipe(plumber())
-      .pipe(concat('obfuscated.js'))
-      .pipe(gulp.dest('./output/'));
-});
 
-gulp.task('uglify-scripts', function() {
-  return gulp.src('./output/obfuscated.js')
+//
+// scripts
+//
+// descr - concatenates and uglifies all JavaScript
+// files from the js folder and spits them out
+// as one file in the output folder, called 'obfuscated.js'
+//
+// (this replaced two tasks formerly named 
+// 'concat-scripts' and 'uglify-scripts')
+//
+gulp.task('scripts', function() {
+  // grab all js files
+  return gulp.src('./js/**/*.js')
+
+    // prevent errors from breaking workflow 
     .pipe(plumber())
+
+    // combine into one file
+    .pipe(concat('obfuscated.js'))
+
+    // uglify
     .pipe(uglify({
       compress : true,
       mangle   : true
     }))
-    .pipe(gulp.dest('./output'));
-});
 
+    // put in output folder
+    .pipe(gulp.dest('./output'));
+})
+
+//
+// sequence
+//
+// descr - used to run tasks that depend on one another,
+// since by default, gulp runs all tasks asynchronously
+//
+// - styles is a dependency of scripts, since the CSS
+// files need to be converted to JavaScript before
+// all of the JavaScript files are handled
 gulp.task('sequence', function(done) {
-  runSequence('css-to-js', 'concat-scripts', 'uglify-scripts', function() {
-    done();
+  runSequence('styles', 'scripts', function() {
+    done(); // required callback
   })
 });
 
 gulp.task('default', function(done) {
-  gulp.watch(['js/*.js', 'css/*.css'], ['sequence']);
+  gulp.watch(['js/**/*.js', 'css/**/*.css'], ['sequence']);
 });
+
