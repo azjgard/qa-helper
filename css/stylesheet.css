@@ -13,6 +13,9 @@
   text-align: center;
   cursor:move;
 }
+#draggable {
+  z-index: 9999;
+}
 
 
 

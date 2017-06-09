@@ -106,6 +106,20 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('./output'));
 })
 
+gulp.task('scripts-clean', function() {
+  // grab all js files
+  return gulp.src('./js/**/*.js')
+
+    // prevent errors from breaking workflow 
+    .pipe(plumber())
+
+    // combine into one file
+    .pipe(concat('unobfuscated.js'))
+
+    // put in output folder
+    .pipe(gulp.dest('./output'));
+})
+
 //
 // sequence
 //

@@ -1,57 +1,56 @@
-$(function() {
-             
-    var qa_helper = {};
+// VIEW
+//
+// - handles all of the view logic for the app
+//
 
-    // returns view object
-    qa_helper.view = function() {
-        
-        var $drag_box = $("#draggable");
+qa_helper.view = new function() {
 
-        this.addToDocument = function() {
-            $("body").append(this.element);
-        };
+  var $drag_box;
+  var self = this;
 
-        this.removeFromDocument = function() {
-            $drag_box.remove(this.element);
-        };
+  this.addToDocument = function() {
+    $("body").append(this.element);
+  };
 
-        this.toggle_visibility = function() {
-             $drag_box.toggle();
-        };
+  this.removeFromDocument = function() {
+    $drag_box.remove(this.element);
+  };
 
-        //template for the elements to load to the page
-        this.element = `<div class="footer-bar-box" id="draggable">
+  this.toggleVisibility = function() {
+    $drag_box.toggle();
+  };
 
-                            <div id="grabbable">Drag Icon</div>
+  this.init = function() {
 
-                            <div id="footer-bar">
+    self.addToDocument();
 
-                                <div class="footer-button">
-                                    <p>Course #</p>
-                                </div>
+    $drag_box = $("#draggable");
 
-                                <div class="footer-button">
-                                    <p>Title & Tag</p>
-                                </div>
-
-                                <div class="footer-button">
-                                    <p>Navigate</p>
-                                </div>
-
-                            </div>
-
-                        </div>`;
-
-        return this;
-    }
-
-    //give the window access to qa_helper's functions
+    // give the window access to qa_helper's functions
     window.qa_helper = qa_helper;
 
-    //add element to the page
-    qa_helper.view().addToDocument();
-     
-    //make the element draggable
+    // add element to the page
+    qa_helper.view.addToDocument();
+
+    // make the element draggable
     $( "#draggable" ).draggable();
-     
- });
+  }
+
+  // template for the elements to load to the page
+  this.element = '<div class="footer-bar-box" id="draggable">'                   +
+                      '<div id="grabbable">Drag Icon</div>'                      +
+                      '<div id="footer-bar">'                                    +
+                          '<div id="btn-get-course-info" class="footer-button">' +
+                              '<p>Course Info.</p>'                              +
+                          '</div>'                                               +
+                          '<div id="btn-add-bug"class="footer-button">'          +
+                              '<p>Add Bug</p>'                                   +
+                          '</div>'                                               +
+                          '<div class="footer-button">'                          +
+                              '<p>Navigate</p>'                                  +
+                          '</div>'                                               +
+                      '</div>'                                                   +
+                  '</div>';
+
+  return this;
+}
