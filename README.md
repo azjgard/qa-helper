@@ -10,3 +10,16 @@
 ## Adding to the code
 
 As long as it is running, Gulp will automatically concatenate and obfuscate any javascript files that are inside of the 'js' folder.
+
+
+# TODO
+
+1. Detect the context of the page and change the UI / functionality
+accordingly.
+2. On the TFS page, show a drop down selector of the most common
+bugs. The bugs can be selected from the drop down and the fields
+will automatically be populated.
+3. On the TFS page, create a "copy bug" function. This will grab
+the essential fields from the bug and allow them to be stored
+somewhere else.
+
