@@ -10,6 +10,7 @@
   text-align : center;
   cursor     : move;
   padding    : 10px;
+  background-color: #ccc;
 }
 #draggable {
   z-index: 9999;
