@@ -31,10 +31,47 @@
 // -----------
 //
 
-//if bar has been loaded on the page
+//if bar has not yet been loaded on the page, add it
 if(!qa_helper){
 
+  
   var qa_helper = {};
+  
+  //
+  //Create templates for different websites
+  //
+  var template;
+  if(typeof loadNextSlide !== 'undefined') {
+    //blackboard courseware
+    template = '<div class="footer-bar-box" id="draggable">'                                                          +
+                      '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'   +
+                      '<div id="footer-bar">'                                                                         +
+                          '<div class="footer-button" id="qa-prev-slide"'                                              +
+                              '<p>Previous Slide</p>'                                                                 +
+                          '</div>'                                                                                    +
+                          '<div id="btn-get-course-info" class="footer-button">'                                      +
+                              '<p>Course Info.</p>'                                                                   +
+                          '</div>'                                                                                    +
+                          '<div class="footer-button" id="qa-next-slide">'                                                         +
+                              '<p>Next Slide</p>'                                                                     +
+                          '</div>'                                                                                    +
+                      '</div>'                                                                                        +
+                  '</div>';;
+  
+  } else if($('span.tag-container>span.tag-box.tag-box-selectable')){
+    //Visual Studio Team Foundation Server 2015
+    template = '<div class="footer-bar-box" id="draggable">'                                                          +
+                      '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'   +
+                      '<div id="footer-bar">'                                                                         +
+                          '<div id="btn-add-bug"class="footer-button">'                                               +
+                              '<p>Add Bug</p>'                                                                        +
+                          '</div>'                                                                                    +
+                      '</div>'                                                                                        +
+                  '</div>';;
+
+  }
+
+
 
   // timeout for 500 seconds to wait for everything else to initialize
   setTimeout(function() {
@@ -42,11 +79,13 @@ if(!qa_helper){
     console.log('The QA Helper has been loaded!');
 
     // initialize the view components
-    qa_helper.view.init();
+    qa_helper.view.init(template);
 
   	$("#btn-get-course-info").on("click", qa_helper.getCurrentSlide);
   	$("#btn-add-bug").on("click", qa_helper.addBug);
     $("#hide-qa-helper").on("click", qa_helper.view.toggleVisibility);
+    $("#qa-prev-slide").on("click", qa_helper.navigate.prev_slide);
+    $("#qa-next-slide").on("click", qa_helper.navigate.next_slide);
 
 
     // TODO: make the hotkeys and the UI smart by only displaying the
@@ -84,6 +123,7 @@ if(!qa_helper){
 
   }, 500);
 
+//if bar has been loaded on the page, toggle the visibility
 } else {
   $("#hide-qa-helper").click();
 }

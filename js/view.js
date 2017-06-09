@@ -21,7 +21,8 @@ qa_helper.view = new function() {
     $drag_box.fadeToggle(400, "linear");
   };
 
-  this.init = function() {
+  this.init = function(template) {
+    this.element = template;
     this.addToDocument();
 
     // give the window access to qa_helper's functions
@@ -33,7 +34,7 @@ qa_helper.view = new function() {
 
   // template for the elements to load to the page
   this.element = '<div class="footer-bar-box" id="draggable">'                   +
-                      '<div id="grabbable" class="group"><span>Drag Icon</span><button id="hide-qa-helper">X</button></div>'                      +
+                      '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'                      +
                       '<div id="footer-bar">'                                    +
                           '<div id="btn-get-course-info" class="footer-button">' +
                               '<p>Course Info.</p>'                              +
