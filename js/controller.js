@@ -47,5 +47,41 @@ setTimeout(function() {
 	// $("#btn-add-bug").on("click", function(){
 	// 	  alert('get course info')
 	// });
+  //
+  //
+  //
+
+  // TODO: make the hotkeys and the UI smart by only displaying the
+  // functions that are relevant for the current page (whether TFS
+  // or Blackboard)
+
+  var hotkey_addBug          = 65;  // A
+  var hotkey_nextSlide       = 190; // .
+  var hotkey_prevSlide       = 188; // ,
+  var hotkey_getCurrentSlide = 83;  // s
+
+  var ctrlPressed  = false,
+      shiftPressed = false,
+      listening    = false;
+
+  $(window).keydown(handleKeydown);
+  $(window).keyup(handleKeyUp);
+
+  function handleKeydown(ev) {
+    if      (ev.keyCode === 17) { ctrlPressed  = true; }
+    else if (ev.keyCode === 16) { shiftPressed = true; }
+
+    if (ctrlPressed && shiftPressed) {
+      if      (ev.keyCode === hotkey_addBug)          { qa_helper.addBug();              }
+      else if (ev.keyCode === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
+      else if (ev.keyCode === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
+      else if (ev.keyCode === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
+    }
+  }
+
+  function handleKeyUp() {
+    if      (ev.keyCode === 17) { ctrlPressed  = false; }
+    else if (ev.keyCode === 16) { shiftPressed = false; }
+  }
 
 }, 500);
