@@ -40,16 +40,9 @@ setTimeout(function() {
   // initialize the view components
   qa_helper.view.init();
 
-	// $("#btn-get-course-info").on("click", function(){
-	// 	  alert('get course info')
-	// });
+	$("#btn-get-course-info").on("click", qa_helper.getCurrentSlide);
+	$("#btn-add-bug").on("click", qa_helper.addBug);
 
-	// $("#btn-add-bug").on("click", function(){
-	// 	  alert('get course info')
-	// });
-  //
-  //
-  //
 
   // TODO: make the hotkeys and the UI smart by only displaying the
   // functions that are relevant for the current page (whether TFS
@@ -79,7 +72,7 @@ setTimeout(function() {
     }
   }
 
-  function handleKeyUp() {
+  function handleKeyUp(ev) {
     if      (ev.keyCode === 17) { ctrlPressed  = false; }
     else if (ev.keyCode === 16) { shiftPressed = false; }
   }
