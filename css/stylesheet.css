@@ -2,29 +2,29 @@
 
 /*IDS*/
 #footer-bar{
-    display: flex;
-    justify-content: space-around;
-    background-color: red; 
+  display: flex;
+  justify-content: space-around;
+  background-color: red; 
 }
 #grabbable {
-    height: 20px;
-    background-color: red;
-    border: solid black 1px;
-    text-align: center;
-    cursor:move;
+  height: 20px;
+  background-color: red;
+  border: solid black 1px;
+  text-align: center;
+  cursor:move;
 }
 
 
 
 /*CLASSES*/
 .footer-bar-box{
-    position: absolute;
-    bottom: 0;
-    left: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 .footer-button{
-    border: solid black 1px;
-    padding: 0 10px;
-    text-align: center;
-    cursor: pointer;
+  border: solid black 1px;
+  padding: 0 10px;
+  text-align: center;
+  cursor: pointer;
 }
