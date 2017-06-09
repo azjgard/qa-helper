@@ -30,51 +30,60 @@
 //
 // -----------
 //
-var qa_helper = {};
 
-// timeout for 500 seconds to wait for everything else to initialize
-setTimeout(function() {
+//if bar has been loaded on the page
+if(!qa_helper){
 
-  console.log('The QA Helper has been loaded!');
+  var qa_helper = {};
 
-  // initialize the view components
-  qa_helper.view.init();
+  // timeout for 500 seconds to wait for everything else to initialize
+  setTimeout(function() {
 
-	$("#btn-get-course-info").on("click", qa_helper.getCurrentSlide);
-	$("#btn-add-bug").on("click", qa_helper.addBug);
+    console.log('The QA Helper has been loaded!');
+
+    // initialize the view components
+    qa_helper.view.init();
+
+  	$("#btn-get-course-info").on("click", qa_helper.getCurrentSlide);
+  	$("#btn-add-bug").on("click", qa_helper.addBug);
+    $("#hide-qa-helper").on("click", qa_helper.view.toggleVisibility);
 
 
-  // TODO: make the hotkeys and the UI smart by only displaying the
-  // functions that are relevant for the current page (whether TFS
-  // or Blackboard)
+    // TODO: make the hotkeys and the UI smart by only displaying the
+    // functions that are relevant for the current page (whether TFS
+    // or Blackboard)
 
-  var hotkey_addBug          = 65;  // A
-  var hotkey_nextSlide       = 190; // .
-  var hotkey_prevSlide       = 188; // ,
-  var hotkey_getCurrentSlide = 83;  // s
+    var hotkey_addBug          = 65;  // A
+    var hotkey_nextSlide       = 190; // .
+    var hotkey_prevSlide       = 188; // ,
+    var hotkey_getCurrentSlide = 83;  // s
 
-  var ctrlPressed  = false,
-      shiftPressed = false,
-      listening    = false;
+    var ctrlPressed  = false,
+        shiftPressed = false,
+        listening    = false;
 
-  $(window).keydown(handleKeydown);
-  $(window).keyup(handleKeyUp);
+    $(window).keydown(handleKeydown);
+    $(window).keyup(handleKeyUp);
 
-  function handleKeydown(ev) {
-    if      (ev.keyCode === 17) { ctrlPressed  = true; }
-    else if (ev.keyCode === 16) { shiftPressed = true; }
+    function handleKeydown(ev) {
+      if      (ev.keyCode === 17) { ctrlPressed  = true; }
+      else if (ev.keyCode === 16) { shiftPressed = true; }
 
-    if (ctrlPressed && shiftPressed) {
-      if      (ev.keyCode === hotkey_addBug)          { qa_helper.addBug();              }
-      else if (ev.keyCode === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
-      else if (ev.keyCode === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
-      else if (ev.keyCode === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
+      if (ctrlPressed && shiftPressed) {
+        if      (ev.keyCode === hotkey_addBug)          { qa_helper.addBug();              }
+        else if (ev.keyCode === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
+        else if (ev.keyCode === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
+        else if (ev.keyCode === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
+      }
     }
-  }
 
-  function handleKeyUp(ev) {
-    if      (ev.keyCode === 17) { ctrlPressed  = false; }
-    else if (ev.keyCode === 16) { shiftPressed = false; }
-  }
+    function handleKeyUp(ev) {
+      if      (ev.keyCode === 17) { ctrlPressed  = false; }
+      else if (ev.keyCode === 16) { shiftPressed = false; }
+    }
 
-}, 500);
+  }, 500);
+
+} else {
+  $("#hide-qa-helper").click();
+}

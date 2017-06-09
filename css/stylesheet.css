@@ -21,7 +21,7 @@
 /*CLASSES*/
 .footer-bar-box{
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
 }
 .footer-button{
@@ -29,4 +29,7 @@
   padding: 0 10px;
   text-align: center;
   cursor: pointer;
+}
+.float-right {
+    float: right;
 }
