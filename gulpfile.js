@@ -130,7 +130,7 @@ gulp.task('scripts-clean', function() {
 // files need to be converted to JavaScript before
 // all of the JavaScript files are handled
 gulp.task('sequence', function(done) {
-  runSequence('styles', 'scripts', function() {
+  runSequence('styles', 'scripts-clean', function() {
     done(); // required callback
   })
 });
