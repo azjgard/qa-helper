@@ -112,7 +112,7 @@ function addTag(tag) {
 //
 // @param title - a string representation of the title to be added
 function addTitle(title) {
-  var $titleInput = $('.dialog input[aria-label="Title"');
+  var $titleInput = $('.dialog input[aria-label="Title"]');
   $titleInput.val(title + ' - ');
   $titleInput.focus();
 }
@@ -177,71 +177,105 @@ function addTitle(title) {
 
 (function()  { 
 
-	$("#btn-support").click(); 
-	$("#btn-support").click();
+  var $btn_support = $("#btn-support");
+
+  //click the question mark button on navigation menu to change the slideID
+  //click again to close the popup modal
+	$btn_support.click(); 
+	$btn_support.click();
+
+  //grab slide information
 	var full_reference_id = $("div#lightboxBody>p:nth-of-type(2)").text().slice(0, -1);
 	var scoName = $('#scoName').text();
+
+  //have user copy slide info
 	prompt("Press Ctrl+C to copy to clipboard", full_reference_id + " --- " + scoName); 
 
 })()
 (function() {
 
-	var slide_reference = prompt("Please enter the 3 number sequence of the slide you want to go to (last three numbers)", "1-01-1"); 
-	loadSlideByReferenceId(slide_reference); 
+	var navigate_slides = function(){
 
-})()
+		this.select_slide = function(){
+			
+      //lets you choose the slide to go to
+			var slide_reference = prompt("Please enter the 3 number sequence of the slide you want to go to (last three numbers)", "1-01-1"); 
+			loadSlideByReferenceId(slide_reference); 
+      return this;
+
+		};
+
+		//takes you to the next slide
+		this.next_slide = function(){
+			loadNextSlide();
+      return this;
+		};
+
+		//takes you to the previous slide
+		this.prev_slide = function(){
+			loadPrevSlide();
+      return this;
+		};
+	}
+
+})();
 
 
 (function() { var css = '#footer-bar{display:flex;justify-content:space-around;background-color:red}#grabbable{height:20px;background-color:red;border:solid black 1px;text-align:center;cursor:move}.footer-bar-box{position:absolute;bottom:0;left:0}.footer-button{border:solid black 1px;padding:0 10px;text-align:center;cursor:pointer}';var style = document.createElement('style');style.innerHTML = css;document.head.appendChild(style);})();
-
 $(function() {
              
     var qa_helper = {};
 
+    // returns view object
     qa_helper.view = function() {
         
-        var drag_box = $("#draggable");
+        var $drag_box = $("#draggable");
 
-        this.isVisible;
-
-        this.addToDocument = function(element) {
+        this.addToDocument = function() {
             $("body").append(this.element);
         };
-     
+
+        this.removeFromDocument = function() {
+            $drag_box.remove(this.element);
+        };
+
         this.toggle_visibility = function() {
-             drag_box.toggle();
+             $drag_box.toggle();
         };
 
-        this.removeFromDocument = function(object) {
-            drag_box.remove();
-        };
-
+        //template for the elements to load to the page
         this.element = `<div class="footer-bar-box" id="draggable">
 
-                        <div id="grabbable">Drag Icon</div>
+                            <div id="grabbable">Drag Icon</div>
 
-                        <div id="footer-bar">
+                            <div id="footer-bar">
 
-                            <div class="footer-button">
-                                <p>Course #</p>
+                                <div class="footer-button">
+                                    <p>Course #</p>
+                                </div>
+
+                                <div class="footer-button">
+                                    <p>Title & Tag</p>
+                                </div>
+
+                                <div class="footer-button">
+                                    <p>Navigate</p>
+                                </div>
+
                             </div>
 
-                            <div class="footer-button">
-                                <p>Title & Tag</p>
-                            </div>
-
-                            <div class="footer-button">
-                                <p>Navigate</p>
-                            </div>
-
-                        </div>
-                    </div>`;
+                        </div>`;
 
         return this;
     }
+
+    //give the window access to qa_helper's functions
     window.qa_helper = qa_helper;
-    qa_helper.view().addToDocument(qa_helper.view.element);
+
+    //add element to the page
+    qa_helper.view().addToDocument();
      
+    //make the element draggable
     $( "#draggable" ).draggable();
      
  });

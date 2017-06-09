@@ -112,7 +112,7 @@ function addTag(tag) {
 //
 // @param title - a string representation of the title to be added
 function addTitle(title) {
-  var $titleInput = $('.dialog input[aria-label="Title"');
+  var $titleInput = $('.dialog input[aria-label="Title"]');
   $titleInput.val(title + ' - ');
   $titleInput.focus();
 }
