@@ -6,7 +6,6 @@
 qa_helper.view = new function() {
 
   var $drag_box;
-  var self = this;
 
   this.addToDocument = function() {
     $("body").append(this.element);
@@ -21,16 +20,10 @@ qa_helper.view = new function() {
   };
 
   this.init = function() {
-
-    self.addToDocument();
-
-    $drag_box = $("#draggable");
+    this.addToDocument();
 
     // give the window access to qa_helper's functions
     window.qa_helper = qa_helper;
-
-    // add element to the page
-    qa_helper.view.addToDocument();
 
     // make the element draggable
     $( "#draggable" ).draggable();
