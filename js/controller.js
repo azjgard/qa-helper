@@ -44,35 +44,37 @@ if(!qa_helper){
   var template;
   if(typeof loadNextSlide !== 'undefined') {
     //Blackboard courseware
-    template = '<div class="footer-bar-box" id="draggable">'                                                          +
-                      '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'   +
-                      '<div id="footer-bar">'                                                                         +
-                          '<div class="footer-button" id="qa-prev-slide"'                                              +
-                              '<p>Previous Slide</p>'                                                                 +
-                          '</div>'                                                                                    +
-                          '<div id="btn-get-course-info" class="footer-button">'                                      +
-                              '<p>Course Info.</p>'                                                                   +
-                          '</div>'                                                                                    +
-                          '<div class="footer-button" id="qa-next-slide">'                                                         +
-                              '<p>Next Slide</p>'                                                                     +
-                          '</div>'                                                                                    +
-                      '</div>'                                                                                        +
+    template = '<div class="footer-bar-box slide" id="draggable">'                                                                 +
+                      '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
+                      '<div id="footer-bar">'                                                                                +
+                          '<div class="footer-button" id="qa-prev-slide"'                                                    +
+                              '<p>Previous Slide</p>'                                                                        +
+                              '<small>hotkey: , (comma)</small>'                                                                        +
+                          '</div>'                                                                                           +
+                          '<div id="btn-get-course-info" class="footer-button">'                                             +
+                              '<p>Course Info</p>'                                                                          +
+                              '<small>hotkey: Ctrl+Shift+S</small>'                                                                        +
+                          '</div>'                                                                                           +
+                          '<div class="footer-button" id="qa-next-slide">'                                                   +
+                              '<p>Next Slide</p>'                                                                            +
+                              '<small>hotkey: . (period)</small>'                                                                        +
+                          '</div>'                                                                                           +
+                      '</div>'                                                                                               +
                   '</div>';;
   
   } else if($('span.tag-container>span.tag-box.tag-box-selectable')){
     //Visual Studio Team Foundation Server 2015
-    template = '<div class="footer-bar-box" id="draggable">'                                                          +
-                      '<div id="grabbable" class="group"><span></span><button id="hide-qa-helper">X</button></div>'   +
-                      '<div id="footer-bar">'                                                                         +
-                          '<div id="btn-add-bug"class="footer-button">'                                               +
-                              '<p>Add Bug</p>'                                                                        +
-                          '</div>'                                                                                    +
-                      '</div>'                                                                                        +
+    template = '<div class="footer-bar-box" id="draggable">'                                                                 +
+                      '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
+                      '<div id="footer-bar">'                                                                                +
+                          '<div id="btn-add-bug"class="footer-button">'                                                      +
+                              '<p>Add Bug</p>'                                                                               +
+                              '<small>hotkey: Ctrl+Shift+A</small>'                                                                        +
+                          '</div>'                                                                                           +
+                      '</div>'                                                                                               +
                   '</div>';;
 
   }
-
-
 
   // timeout for 500 seconds to wait for everything else to initialize
   setTimeout(function() {

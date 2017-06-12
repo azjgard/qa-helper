@@ -29,7 +29,7 @@ qa_helper.view = new function() {
     window.qa_helper = qa_helper;
 
     // make the element draggable
-    $drag_box.draggable();
+    $drag_box.draggable({ handle: "#grabbable" });
   }
 
   // template for the elements to load to the page
