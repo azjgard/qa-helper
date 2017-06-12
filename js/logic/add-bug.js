@@ -139,6 +139,46 @@ qa_helper.addBug = new function() {
       alert('That data was invalid!');
     }
     else {
+
+
+      //find all 'Content QA' divs
+      var $content_qas = $('div[title="Content QA"]');
+
+      //will hold the content qa div that we want
+      var $correct_content_qa;
+
+      //find the correct content qa
+      for(var i = 0; i < $content_qas.length; i++) {
+
+          var siblings_of_content_qa = $($content_qas[i]).parent().children();
+
+          //get tags on the content qa row
+          var tag_list_items = $(siblings_of_content_qa[siblings_of_content_qa.length - 1]).children().children().children().children();
+          
+          //check the tags to see if they match the slide title. If they match, save the correct div 
+          for(var j = 0; j < tag_list_items.length; j++) {
+              
+              var title = $(tag_list_items[j]).attr('title');
+              if(title && title === "Web" + components.webNumber + "-" + courseInfo.sectionTitle){
+                  $correct_content_qa = $content_qas[i];
+              }
+          }
+      }
+
+      //if no content qa div was found
+      if(typeof $correct_content_qa === 'undefined'){
+          alert("Please open the 'Feature' you want to work in and try again.");
+      }
+      else{
+          //click Content QA plus button to open "add bug" menu
+          $($($correct_content_qa).parent().children()[0]).children().click();
+
+          //click "add bug" in the menu to add bug
+          $('ul>li>ul>li>span.text:contains("Bug")').click()
+      }
+
+
+
       tagOne = components.programCode +
         components.programVersion     +
         '-'                           +
