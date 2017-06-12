@@ -102,15 +102,17 @@ qa_helper.addBug = new function() {
   //
   // @param tag - a string representation of the tag to be added
   function addTag(tag) {
-    var $input        = '';
-    var $addButton    = $('.tag-box.tag-box-selectable');
-    var pressEnterKey = $.Event('keydown', { keyCode : 13 });
+    setTimeout(function(){
+      var $input        = '';
+      var $addButton    = $('.tag-box.tag-box-selectable');
+      var pressEnterKey = $.Event('keydown', { keyCode : 13 });
 
-    $addButton.click();
-    $input = $('.tags-input.tag-box.ui-autocomplete-input');
+      $addButton.click();
+      $input = $('.tags-input.tag-box.ui-autocomplete-input');
 
-    $input.val(tag);
-    $input.trigger(pressEnterKey);
+      $input.val(tag);
+      $input.trigger(pressEnterKey);
+    }, 1000);
   }
 
   //
@@ -118,9 +120,11 @@ qa_helper.addBug = new function() {
   //
   // @param title - a string representation of the title to be added
   function addTitle(title) {
-    var $titleInput = $('.dialog input[aria-label="Title"]');
-    $titleInput.val(title + ' - ');
-    $titleInput.focus();
+    setTimeout(function(){
+      var $titleInput = $('.dialog input[aria-label="Title"]');
+      $titleInput.val(title + ' - ');
+      $titleInput.focus();
+    }, 1000);
   }
 
   var addBug = function() {
@@ -159,8 +163,15 @@ qa_helper.addBug = new function() {
           for(var j = 0; j < tag_list_items.length; j++) {
               
               var title = $(tag_list_items[j]).attr('title');
-              if(title && title === "Web" + components.webNumber + "-" + courseInfo.sectionTitle){
-                  $correct_content_qa = $content_qas[i];
+              console.log('Title: ' + title);
+              if(title && title.indexOf("-DE:") > -1){
+                if(title === "Web" + components.webNumber + "-DE:" + courseInfo.sectionTitle){
+                    $correct_content_qa = $content_qas[i];
+                }
+              } else {
+                if(title && title === "Web" + components.webNumber + "-" + courseInfo.sectionTitle){
+                    $correct_content_qa = $content_qas[i];
+                }
               }
           }
       }
