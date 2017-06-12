@@ -32,17 +32,20 @@
 //
 
 //if bar has not yet been loaded on the page, add it
-if(!qa_helper){
-
+if (!qa_helper){
   
-  var qa_helper = {};
-  
+  var qa_helper   = {};
 
-  //
-  //Create templates for different web pages
-  //
+  // true if the current page is the new CourseWare
+  var isSlidePage = (typeof loadNextSlide !== 'undefined');
+
+  // true if the current page is TFS
+  var isTfsPage   = ($('span.tag-container>span.tag-box.tag-box-selectable')[0]);
+
+  // Create templates for different web pages
   var template;
-  if(typeof loadNextSlide !== 'undefined') {
+
+  if (isSlidePage) {
     //Blackboard courseware
     template = '<div class="footer-bar-box slide" id="draggable">'                                                                 +
                       '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
@@ -51,18 +54,17 @@ if(!qa_helper){
                               '<p>Previous Slide</p>'                                                                        +
                               '<small>hotkey: , (comma)</small>'                                                                        +
                           '</div>'                                                                                           +
-                          '<div id="btn-get-course-info" class="footer-button">'                                             +
-                              '<p>Course Info</p>'                                                                          +
-                              '<small>hotkey: Ctrl+Shift+S</small>'                                                                        +
+                          '<div class="footer-button" id="qa-add-bug">'                                                   +
+                              '<p>Add Bug</p>'                                                                            +
+                              '<small>hotkey: Ctrl+Shift+s</small>'                                                                        +
                           '</div>'                                                                                           +
                           '<div class="footer-button" id="qa-next-slide">'                                                   +
                               '<p>Next Slide</p>'                                                                            +
                               '<small>hotkey: . (period)</small>'                                                                        +
                           '</div>'                                                                                           +
                       '</div>'                                                                                               +
-                  '</div>';;
-  
-  } else if($('span.tag-container>span.tag-box.tag-box-selectable')){
+                  '</div>';
+  } else if (isTfsPage) {
     //Visual Studio Team Foundation Server 2015
     template = '<div class="footer-bar-box" id="draggable">'                                                                 +
                       '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
@@ -70,6 +72,10 @@ if(!qa_helper){
                           '<div id="btn-add-bug"class="footer-button">'                                                      +
                               '<p>Add Bug</p>'                                                                               +
                               '<small>hotkey: Ctrl+Shift+A</small>'                                                                        +
+                          '</div>'                                                                                           +
+                          '<div class="footer-button" id="qa-send-msg">'                                                   +
+                              '<p>Send Message</p>'                                                                            +
+                              '<small></small>'                                                                        +
                           '</div>'                                                                                           +
                       '</div>'                                                                                               +
                   '</div>';;
@@ -79,17 +85,35 @@ if(!qa_helper){
   // timeout for 500 seconds to wait for everything else to initialize
   setTimeout(function() {
 
-    console.log('The QA Helper has been loaded!');
-
     // initialize the view components
     qa_helper.view.init(template);
 
+    // open TFS if the current page is the slide page
+    if (isSlidePage) {
+      qa_helper.openTfsWindow();
+    }
+
+    // add on('message') listeners if the current page is TFS
+    if (isTfsPage) {
+      qa_helper.addTfsEvents();
+    }
+    
+    // add UI Event Listeners
   	$("#btn-get-course-info").on("click", qa_helper.getCurrentSlide);
   	$("#btn-add-bug").on("click", qa_helper.addBug);
     $("#hide-qa-helper").on("click", qa_helper.view.toggleVisibility);
     $("#qa-prev-slide").on("click", qa_helper.navigate.prev_slide);
     $("#qa-next-slide").on("click", qa_helper.navigate.next_slide);
+    $('#qa-open-tfs').on('click', qa_helper.openTfsWindow);
 
+    $('#qa-add-bug').on('click', sendMessageAddBug);
+
+    function sendMessageAddBug() {
+      var slideInfo = qa_helper.getCurrentSlide();
+
+      window.sendTFSMessage("addBug", slideInfo);
+
+    }
 
     // TODO: make the hotkeys and the UI smart by only displaying the
     // functions that are relevant for the current page (whether TFS
@@ -112,11 +136,12 @@ if(!qa_helper){
       else if (ev.which === 16) { shiftPressed = true; }
 
       if (ctrlPressed && shiftPressed) {
-        if      (ev.which === hotkey_addBug)          { qa_helper.addBug();              }
-        else if (ev.which === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
-        else if (ev.which === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
+        if      (ev.which === hotkey_addBug)          { sendMessageAddBug();              }
         else if (ev.which === hotkey_getCurrentSlide) { qa_helper.getCurrentSlide();     }
       }
+
+      if (ev.which === hotkey_nextSlide)       { qa_helper.navigate.next_slide(); }
+      if (ev.which === hotkey_prevSlide)       { qa_helper.navigate.prev_slide(); }
     }
 
     function handleKeyUp(ev) {

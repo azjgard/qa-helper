@@ -7,6 +7,8 @@
 // @return - a function signature that,
 // when executed, will add a bug in TFS
 qa_helper.addBug = new function() {
+
+  // **** DEPRECATED *****
   //
   // promptCourseInformation
   //
@@ -103,6 +105,7 @@ qa_helper.addBug = new function() {
   // @param tag - a string representation of the tag to be added
   function addTag(tag) {
     setTimeout(function(){
+      console.log('this is running');
       var $input        = '';
       var $addButton    = $('.tag-box.tag-box-selectable');
       var pressEnterKey = $.Event('keydown', { keyCode : 13 });
@@ -121,14 +124,18 @@ qa_helper.addBug = new function() {
   // @param title - a string representation of the title to be added
   function addTitle(title) {
     setTimeout(function(){
+      console.log('so is this');
       var $titleInput = $('.dialog input[aria-label="Title"]');
       $titleInput.val(title + ' - ');
       $titleInput.focus();
     }, 1000);
   }
 
-  var addBug = function() {
-    var courseInfo   = promptCourseInformation();
+  var addBug = function(parsedSlideInfo) {
+
+    // var courseInfo   = promptCourseInformation();
+
+    var courseInfo = parseCourseInformation(parsedSlideInfo);
 
     if (courseInfo) {
       var tagOne, tagTwo;
@@ -143,7 +150,6 @@ qa_helper.addBug = new function() {
       alert('That data was invalid!');
     }
     else {
-
 
       //find all 'Content QA' divs
       var $content_qas = $('div[title="Content QA"]');
