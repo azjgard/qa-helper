@@ -115,7 +115,7 @@ qa_helper.addBug = new function() {
 
       $input.val(tag);
       $input.trigger(pressEnterKey);
-    }, 1000);
+    }, 1500);
   }
 
   //
@@ -128,7 +128,7 @@ qa_helper.addBug = new function() {
       var $titleInput = $('.dialog input[aria-label="Title"]');
       $titleInput.val(title + ' - ');
       $titleInput.focus();
-    }, 1000);
+    }, 1500);
   }
 
   var addBug = function(parsedSlideInfo) {
