@@ -46,8 +46,8 @@
   position: absolute;
 }
 .footer-bar-box.slide {
-  left: 30px;
-  top: 200px;
+  left: 330px;
+  top: 625px;
 }
 .footer-bar-box:not(.slide) {
   left: 23px;
