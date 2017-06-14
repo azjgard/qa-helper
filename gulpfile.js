@@ -26,6 +26,9 @@ var ext_replace = require('gulp-ext-replace');
 var uglify      = require('gulp-uglify');
 var uglifycss   = require('gulp-uglifycss');
 
+var jsesc = require('jsesc');
+var fs = require('fs')
+
 //
 // Variables
 //
@@ -98,8 +101,8 @@ gulp.task('scripts', function() {
 
     // uglify
     .pipe(uglify({
-      compress : true,
-      mangle   : true
+      compress : false,
+      mangle   : false
     }))
 
     // put in output folder
@@ -120,6 +123,19 @@ gulp.task('scripts-clean', function() {
     .pipe(gulp.dest('./output'));
 })
 
+gulp.task('escape', function() {
+  fs.readFile('./output/obfuscated.js', 'utf-8', function read(err, data) {
+    if (err) { throw err; }
+    else {
+      var escaped = jsesc(data, { 'quotes' : 'double' });
+
+      fs.writeFile('./dist/obfuscated.js', escaped, function(err) {
+        if (err) { throw err; }
+      })
+    }
+  }); 
+});
+
 //
 // sequence
 //
@@ -130,10 +146,11 @@ gulp.task('scripts-clean', function() {
 // files need to be converted to JavaScript before
 // all of the JavaScript files are handled
 gulp.task('sequence', function(done) {
-  runSequence('styles', 'scripts-clean', function() {
+  runSequence('styles', 'scripts', 'scripts-clean', function() {
     done(); // required callback
   })
 });
+
 
 gulp.task('default', function(done) {
   gulp.watch(['js/**/*.js', 'css/**/*.css'], ['sequence']);
