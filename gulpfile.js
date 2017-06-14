@@ -128,6 +128,7 @@ gulp.task('escape', function() {
     if (err) { throw err; }
     else {
       var escaped = jsesc(data, { 'quotes' : 'double' });
+      escaped = "javascript:(function(){" + escaped + "})()";
 
       fs.writeFile('./dist/obfuscated.js', escaped, function(err) {
         if (err) { throw err; }
