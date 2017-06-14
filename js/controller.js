@@ -69,8 +69,8 @@ if (!qa_helper){
     template = '<div class="footer-bar-box" id="draggable">'                                                                 +
                       '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
                       '<div id="footer-bar">'                                                                                +
-                          '<div id="btn-add-bug"class="footer-button">'                                                      +
-                              '<p>Add Bug</p>'                                                                               +
+                          '<div id="qa-copy-as-issue" class="footer-button">'                                                      +
+                              '<p>Copy Bug as Issue</p>'                                                                               +
                               '<small>hotkey: Ctrl+Shift+A</small>'                                                                        +
                           '</div>'                                                                                           +
                           '<div class="footer-button" id="qa-send-msg">'                                                   +

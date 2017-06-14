@@ -190,8 +190,10 @@ qa_helper.addBug = new function() {
           //click Content QA plus button to open "add bug" menu
           $($($correct_content_qa).parent().children()[0]).children().click();
 
-          //click "add bug" in the menu to add bug
-          $('ul>li>ul>li>span.text:contains("Bug")').click()
+          setTimeout(function(){
+            //click "add bug" in the menu to add bug
+            $('ul>li>ul>li>span.text:contains("Bug")').click();
+          }, 500);
       }
 
 
