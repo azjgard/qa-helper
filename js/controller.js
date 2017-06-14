@@ -47,18 +47,18 @@ if (!qa_helper){
 
   if (isSlidePage) {
     //Blackboard courseware
-    template = '<div class=\"footer-bar-box slide\" id=\"draggable\">'                                                                 +
-                      '<div id=\"grabbable\" class=\"group\"><h2>UTI QA Helper</h2><button id=\"hide-qa-helper\">X</button></div>' +
-                      '<div id=\"footer-bar\">'                                                                                +
-                          '<div class=\"footer-button\" id=\"qa-prev-slide\">'                                                    +
+    template = '<div class="footer-bar-box slide" id="draggable">'                                                                 +
+                      '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
+                      '<div id="footer-bar">'                                                                                +
+                          '<div class="footer-button" id="qa-prev-slide">'                                                    +
                               '<p>Previous Slide</p>'                                                                        +
                               '<small>hotkey: , (comma)</small>'                                                                        +
                           '</div>'                                                                                           +
-                          '<div class=\"footer-button\" id=\"qa-add-bug\">'                                                   +
+                          '<div class="footer-button" id="qa-add-bug">'                                                   +
                               '<p>Add Bug</p>'                                                                            +
                               '<small>hotkey: Ctrl+Shift+s</small>'                                                                        +
                           '</div>'                                                                                           +
-                          '<div class=\"footer-button\" id=\"qa-next-slide\">'                                                   +
+                          '<div class="footer-button" id="qa-next-slide">'                                                   +
                               '<p>Next Slide</p>'                                                                            +
                               '<small>hotkey: . (period)</small>'                                                                        +
                           '</div>'                                                                                           +
@@ -66,14 +66,14 @@ if (!qa_helper){
                   '</div>';
   } else if (isTfsPage) {
     //Visual Studio Team Foundation Server 2015
-    template = '<div class=\"footer-bar-box\" id=\"draggable\">'                                                                 +
-                      '<div id=\"grabbable\" class=\"group\"><h2>UTI QA Helper</h2><button id=\"hide-qa-helper\">X</button></div>' +
-                      '<div id=\"footer-bar\">'                                                                                +
-                          '<div id=\"qa-copy-as-issue\" class=\"footer-button\">'                                                      +
+    template = '<div class="footer-bar-box" id="draggable">'                                                                 +
+                      '<div id="grabbable" class="group"><h2>UTI QA Helper</h2><button id="hide-qa-helper">X</button></div>' +
+                      '<div id="footer-bar">'                                                                                +
+                          '<div id="qa-copy-as-issue" class="footer-button">'                                                      +
                               '<p>Copy Bug as Issue</p>'                                                                               +
                               '<small>hotkey: Ctrl+Shift+A</small>'                                                                        +
                           '</div>'                                                                                           +
-                          '<div class=\"footer-button\" id=\"qa-send-msg\">'                                                   +
+                          '<div class="footer-button" id="qa-send-msg">'                                                   +
                               '<p>Send Message</p>'                                                                            +
                               '<small></small>'                                                                        +
                           '</div>'                                                                                           +
