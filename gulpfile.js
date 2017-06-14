@@ -123,7 +123,7 @@ gulp.task('scripts-clean', function() {
     .pipe(gulp.dest('./output'));
 })
 
-gulp.task('escape', function() {
+gulp.task('dist', function() {
   fs.readFile('./output/obfuscated.js', 'utf-8', function read(err, data) {
     if (err) { throw err; }
     else {
@@ -147,7 +147,7 @@ gulp.task('escape', function() {
 // files need to be converted to JavaScript before
 // all of the JavaScript files are handled
 gulp.task('sequence', function(done) {
-  runSequence('styles', 'scripts', 'scripts-clean', function() {
+  runSequence('styles', 'scripts', 'scripts-clean', 'dist', function() {
     done(); // required callback
   })
 });
