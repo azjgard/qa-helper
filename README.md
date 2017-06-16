@@ -23,4 +23,4 @@ will automatically be populated.
 the essential fields from the bug and allow them to be stored
 somewhere else.
 4. Detect the context of the page and change the HOTKEYS accordingly
-
+5. Bulletproof the installer and fix some of its verbiage
