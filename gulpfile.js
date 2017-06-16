@@ -4,6 +4,9 @@ var gulp = require('gulp');
 // Gulp Modules
 //
 
+// run command line stuff
+var shell = require('gulp-shell');
+
 // combine files together
 var concat = require('gulp-concat');
 
@@ -26,7 +29,10 @@ var ext_replace = require('gulp-ext-replace');
 var uglify      = require('gulp-uglify');
 var uglifycss   = require('gulp-uglifycss');
 
+// escape javascript strings
 var jsesc = require('jsesc');
+
+// filesystem
 var fs = require('fs')
 
 //
