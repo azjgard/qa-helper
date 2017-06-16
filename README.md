@@ -14,12 +14,13 @@ As long as it is running, Gulp will automatically concatenate and obfuscate any 
 
 # TODO
 
-1. Detect the context of the page and change the UI / functionality
-accordingly.
+1. <s>Detect the context of the page and change the UI / functionality
+accordingly.</s>
 2. On the TFS page, show a drop down selector of the most common
 bugs. The bugs can be selected from the drop down and the fields
 will automatically be populated.
 3. On the TFS page, create a "copy bug" function. This will grab
 the essential fields from the bug and allow them to be stored
 somewhere else.
+4. Detect the context of the page and change the HOTKEYS accordingly
 
