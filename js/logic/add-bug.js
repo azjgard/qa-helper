@@ -62,21 +62,17 @@ qa_helper.addBug = new function() {
     // e.g. AD
     components.programCode = slideID.match(/^\w{2}/i);
     splitString += components.programCode;
-    console.log('program code: ' + components.programCode);
 
     // e.g. 12
     components.programVersion = slideID.split(splitString)[1].match(/^\d{2}/i);
     splitString += components.programVersion + '-';
-    console.log('program version: ' + components.programVersion);
 
     // e.g. 104
     components.courseNumber = slideID.split(splitString)[1].match(/^\d{3}/i);
     splitString += components.courseNumber + '-Web';
-    console.log('course number: ' + components.courseNumber);
 
     // e.g. Web01
     components.webNumber = slideID.split(splitString)[1].match(/^\d{2,}/i);
-    console.log('web number: ' + components.webNumber);
 
     components = verifyComponents(components);
 
@@ -105,7 +101,6 @@ qa_helper.addBug = new function() {
   // @param tag - a string representation of the tag to be added
   function addTag(tag) {
     setTimeout(function(){
-      console.log('this is running');
       var $input        = '';
       var $addButton    = $('.tag-box.tag-box-selectable');
       var pressEnterKey = $.Event('keydown', { keyCode : 13 });
@@ -124,17 +119,23 @@ qa_helper.addBug = new function() {
   // @param title - a string representation of the title to be added
   function addTitle(title) {
     setTimeout(function(){
-      console.log('so is this');
       var $titleInput = $('.dialog input[aria-label="Title"]');
       $titleInput.val(title + ' - ');
       $titleInput.focus();
     }, 1500);
   }
 
+  //
+  // stdize
+  //
+  // @param str - string to remove commas since TFS won't allow them in tags
+  function stdize(str) {
+    return str.replace(/,/g, '');
+  }
+
+
+  // MAIN FUNCTION
   var addBug = function(parsedSlideInfo) {
-
-    // var courseInfo   = promptCourseInformation();
-
     var courseInfo = parseCourseInformation(parsedSlideInfo);
 
     if (courseInfo) {
@@ -151,63 +152,143 @@ qa_helper.addBug = new function() {
     }
     else {
 
-      //find all 'Content QA' divs
+      tagOne = components.programCode    +
+               components.programVersion +
+               '-'                       +
+               components.courseNumber;
+
+      tagTwo = 'Web'                 +
+                components.webNumber +
+                '-'                  +
+                sectionTitle;
+
+      // find all 'Content QA' divs
       var $content_qas = $('div[title="Content QA"]');
 
-      //will hold the content qa div that we want
+      // will hold the content qa div that we want
       var $correct_content_qa;
 
-      //find the correct content qa
-      for(var i = 0; i < $content_qas.length; i++) {
+      $.each($content_qas, function(index, $current) {
+        var $siblings  = $($current).siblings();
+        var $tagParent = $($siblings).filter(function(index) {
+          return $(this).children('.tfs-tags').length > 0;
+        });
+        var $tagInnerParent   = ($tagParent).find('.tags-items-container > ul');
+        var $tagInnerChildren = $($tagInnerParent).children('.tag-item');
 
-          var siblings_of_content_qa = $($content_qas[i]).parent().children();
+        var tags = [];
 
-          //get tags on the content qa row
-          var tag_list_items = $(siblings_of_content_qa[siblings_of_content_qa.length - 1]).children().children().children().children();
-          
-          //check the tags to see if they match the slide title. If they match, save the correct div 
-          for(var j = 0; j < tag_list_items.length; j++) {
-              
-              var title = $(tag_list_items[j]).attr('title');
-              console.log('Title: ' + title);
-              if(title && title.indexOf("-DE:") > -1){
-                if(title === "Web" + components.webNumber + "-DE:" + courseInfo.sectionTitle){
-                    $correct_content_qa = $content_qas[i];
-                }
-              } else {
-                if(title && title === "Web" + components.webNumber + "-" + courseInfo.sectionTitle){
-                    $correct_content_qa = $content_qas[i];
-                }
+        $.each($tagInnerChildren, function(index, $currentTag) {
+          var tag = $($currentTag).attr('title').trim();
+
+          // if there are overflow tags, they are saved in the title attribute
+          // with a ; separating them.
+          if (tag.match(/;\sweb/i)) { // e.g. lorem ipsum; Web10
+            var tagsPlural = tag.split(/;\sweb/i); // e.g. Web12-O2 Sensors; Web12- O2 Sensors
+
+            for (var i = 0; i < tagsPlural.length; i++) {
+              // fix the tags that got cut off
+              if (i > 0 && tagsPlural[i].match(/^\d{2,}-/)) {
+               tagsPlural[i] = "Web" + tagsPlural[i]; 
               }
+              tags.push(tagsPlural[i]);
+            }
           }
+          else {
+           tags.push(tag); 
+         }
+        });
+
+        var courseTags = [], 
+            webTags    = [];
+
+        // identify course tags
+        var pat1 = /^\w{2}\d{2}-\d{2,}$/; // e.g. AD12-105
+
+        // identify web tags
+        var pat2 = /^web\d{1,2}/i; // e.g. Web12-O2 Sensors
+
+        // split them into their respective arrays
+        $.each(tags, function(index, tag) {
+          if      (tag.match(pat1)) { courseTags.push(tag); }
+          else if (tag.match(pat2)) { webTags.push(tag);    }
+        });
+
+        // these flags will be set to true if a Content QA
+        // folder with tags that match are found
+        var courseTagMatch = false,
+            webTagMatch    = false;
+
+        // remove commas since they break TFS tags
+        var standardized_tagOne = stdize(tagOne);
+        var standardized_tagTwo = stdize(tagTwo);
+
+        // look for a course tag match
+        for (var i = 0; i < courseTags.length; i++) {
+          var standardized_courseTag = stdize(courseTags[i]);
+
+          if (standardized_courseTag === standardized_tagOne) {
+            courseTagMatch = true;
+          }
+        }
+
+        // TODO: we already have the slide web number saved in components.webNumber,
+        // so these two lines of code and many things below them are overcomplicating
+        // things and unnecessary. Simplify all of this to use the variable we already
+        // have versus re-parsing the string to get the web number.
+
+        var slideWebNumber = standardized_tagTwo.match(/web\d{1,}/i)[0];
+            slideWebNumber = slideWebNumber.match(/\d{1,}/)[0];
+
+        // look for a web number match
+        //
+        // NOTE: this initially checked by matching the entire web tag,
+        // but now, it only matches the web number. This change was
+        // implemented to compensate for occasional slight differences
+        // between the web title in Blackboard and the manifestation of
+        // that title as a tag in TFS
+        for (var i = 0; i < webTags.length; i++) {
+          var tfsWebNumber = webTags[i].match(/web\d{1,}/i)[0];
+              tfsWebNumber = tfsWebNumber.match(/\d{1,}/)[0];
+
+          if (slideWebNumber === tfsWebNumber) {
+            webTagMatch = true;
+
+            // NOTE: since we want tags to be consistent, this line ensures
+            // that the tag we're adding to the new bug matches the
+            // way that the Content QA folder is tagged, even if that
+            // is different from the way we originally parsed data in TFS
+            tagTwo = webTags[i];
+          }
+        }
+
+        if (courseTagMatch && webTagMatch) {
+          $correct_content_qa = $current;
+        }
+      });
+
+      if (typeof $correct_content_qa === 'undefined') {
+        alert('Something went wrong. Are the Course and User Stories open?');
       }
+      else {
+        // click the plus button
+        $($correct_content_qa).siblings().children('.action').click();
 
-      //if no content qa div was found
-      if(typeof $correct_content_qa === 'undefined'){
-          alert("Please open the 'Feature' you want to work in and try again.");
+        // wait for the sub-menu to pop up
+        setTimeout(cb, 200);
+
+        function cb() {
+          // click the 'Bug' button
+          $('.sub-menu').find('li[title="Bug"]').click(); 
+
+          // wait for the dialog to pop up
+          setTimeout(function() {
+            addTag(stdize(tagOne));
+            addTag(stdize(tagTwo));
+            addTitle(slideID); 
+          }, 200);
+        }
       }
-      else{
-          //click Content QA plus button to open "add bug" menu
-          $($($correct_content_qa).parent().children()[0]).children().click();
-
-          setTimeout(function(){
-            //click "add bug" in the menu to add bug
-            $('ul>li>ul>li>span.text:contains("Bug")').click();
-          }, 500);
-      }
-
-
-
-      tagOne = components.programCode +
-        components.programVersion     +
-        '-'                           +
-        components.courseNumber;
-
-      tagTwo = 'Web' + components.webNumber + '-' + sectionTitle;
-
-      addTag(tagOne);
-      addTag(tagTwo);
-      addTitle(slideID);
     }
   }
 
