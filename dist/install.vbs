@@ -121,7 +121,7 @@ Sub main()
   End If
 
   Dim newBookmarkTitle 
-    newBookmarkTitle = "QA Helper"
+    newBookmarkTitle = "QA Helper BETA"
   Dim newBookmarkValue
     newBookmarkValue = code
   Dim newBookmark    
