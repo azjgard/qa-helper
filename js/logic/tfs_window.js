@@ -1,7 +1,7 @@
 qa_helper.openTfsWindow = new function() {
 
   function main() {
-    var tfsURL = "https://prdtfs.uticorp.com/UTI-ALM/IT/BMS/_backlogs?level = Projects&showParents = true&_a = backlog";
+    var tfsURL = "https://prdtfs.uticorp.com/UTI-ALM/IT/BMS/_backlogs?level=Projects&showParents=false&_a=backlog";
     var win    = window.open(tfsURL);
 
     window.sendTFSMessage = function(trigger, info) {
@@ -10,11 +10,15 @@ qa_helper.openTfsWindow = new function() {
         info    : info
       }, tfsURL);
     }
+
+    // close the TFS window if the slide window is closed
+    $(window).on("beforeunload", function() {
+      win.close();
+    });
   }
 
   return main;
 }
-
 
 // TODO: inside of TFS, add a listener for when the window is closed,
 // and communicate when that happens back to the parent
@@ -41,12 +45,6 @@ qa_helper.addTfsEvents = new function() {
         //  - info is the object to pass to that function
 
         if (data.trigger && data.info) {
-
-          console.log("Got the message, loud and clear!");
-
-          console.log("the trigger is: " + data.trigger);
-          console.log("the info is: " + data.info);
-
           switch(data.trigger) {
             case "addBug":
               qa_helper.addBug(data.info);
