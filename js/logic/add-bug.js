@@ -63,9 +63,16 @@ qa_helper.addBug = new function() {
     components.programCode = slideID.match(/^\w{2}/i);
     splitString += components.programCode;
 
-    // e.g. 12
-    components.programVersion = slideID.split(splitString)[1].match(/^\d{2}/i);
-    splitString += components.programVersion + '-';
+    //fixes inconsistencies in naming conventions (see 'else' below for more details)
+    if(slideID.split(splitString) > -1){
+      // e.g. 12
+      components.programVersion = slideID.split(splitString)[1].match(/^\d{2}/i);
+      splitString += components.programVersion + '-';
+    }
+    //leave programVersion blank if naming doesn't follow AD##-### convention (e.g. AD-###)
+    else {
+      splitString += components.programVersion + '-';
+    }
 
     // e.g. 104
     components.courseNumber = slideID.split(splitString)[1].match(/^\d{3}/i);
@@ -151,7 +158,6 @@ qa_helper.addBug = new function() {
       alert('That data was invalid!');
     }
     else {
-
       tagOne = components.programCode    +
                components.programVersion +
                '-'                       +
@@ -187,7 +193,8 @@ qa_helper.addBug = new function() {
             var tagsPlural = tag.split(/;\sweb/i); // e.g. Web12-O2 Sensors; Web12- O2 Sensors
 
             for (var i = 0; i < tagsPlural.length; i++) {
-              // fix the tags that got cut off
+
+// fix the tags that got cut off
               if (i > 0 && tagsPlural[i].match(/^\d{2,}-/)) {
                tagsPlural[i] = "Web" + tagsPlural[i]; 
               }
@@ -208,11 +215,21 @@ qa_helper.addBug = new function() {
         // identify web tags
         var pat2 = /^web\d{1,2}/i; // e.g. Web12-O2 Sensors
 
+
         // split them into their respective arrays
         $.each(tags, function(index, tag) {
           if      (tag.match(pat1)) { courseTags.push(tag); }
           else if (tag.match(pat2)) { webTags.push(tag);    }
         });
+
+        //fixes courses that start with AD-###
+        if(components.programVersion === ''){
+          tagOne = components.programCode                          +
+                   courseTags[0].match(/^\w{2}(\d{2})-\d{2,}$/)[1] +
+                   '-'                                             +
+                   components.courseNumber;
+        }
+        console.log(tagOne);
 
         // these flags will be set to true if a Content QA
         // folder with tags that match are found
