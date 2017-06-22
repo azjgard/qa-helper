@@ -1,3 +1,7 @@
+# Deprecated
+This repo is now outdated. The work started here is being continued @ https://github.com/azjgard/qa-helper-2 
+-------------------------------------------------------
+
 ## Basic Gulp Workflow
 
 1. Clone the repo
